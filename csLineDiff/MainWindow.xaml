@@ -5,8 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:csLineDiff"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="csLineDiff" Height="350" Width="525">
     <Grid>
-        
+        <Button x:Name="diffButton" Content="diff" Margin="0,0,10,10" IsDefault="True" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" IsEnabled="False" Click="diffButton_Click"/>
+        <ListView x:Name="filesList" Margin="10,10,10,60"/>
+        <Button x:Name="addButton" Content="Add" Margin="0,0,10,35" Click="addButton_Click" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom"/>
+        <Button x:Name="removeButton" Content="Remove" Margin="0,0,90,35" Height="20" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Click="removeButton_Click" IsEnabled="False"/>
+
     </Grid>
 </Window>
