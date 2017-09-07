@@ -85,41 +85,36 @@ namespace csLineDiff
 
         private void diffButton_Click(object sender, RoutedEventArgs e)
         {
-            HashSet<string> differences = new HashSet<string>();
+            // dictionary of lines (key) and occurrences (value)
+            Dictionary<string, int> differences = new Dictionary<string, int>();
 
             foreach (string file in this._files)
             {
                 // load the file into a hashset
                 if (File.Exists(file))
                 {
-                    HashSet<string> contents = new HashSet<string>();
-                    StreamReader reader = new StreamReader(file);
-                    while (!reader.EndOfStream)
-                    {
-                        contents.Add(reader.ReadLine());
-                    }
-
-                    IEnumerator<string> i = contents.GetEnumerator();
+                    string[] contents = File.ReadAllLines(file); // pull text lines into array
+                    IEnumerator<string> i = contents.AsEnumerable<string>().GetEnumerator();
                     while (i.MoveNext())
                     {
-                        if (differences.Contains(i.Current))
+                        string current = i.Current;
+                        if (differences.ContainsKey(current))
                         {
-                            differences.Remove(i.Current);
+                            int occurences = differences[current];
+                            differences[current] += 1;
                         }
                         else
                         {
-                            differences.Add(i.Current);
+                            differences.Add(current, 1);
                         }
                     }
-
-                    reader.Close();
                 }
             }
 
             // sort the differences
-            string[] lines = differences.ToArray<string>();
-            Array.Sort<string>(lines, (a, b) => String.Compare(a, b));
-            this.saveSetAsTextFile(lines);
+            string[] linesOut = differences.Where(pair => pair.Value == 1).Select(pair => pair.Key).ToArray();
+            Array.Sort<string>(linesOut, (a, b) => String.Compare(a, b));
+            this.saveSetAsTextFile(linesOut);
         }
 
         private void saveSetAsTextFile(string[] lines)
